@@ -6,7 +6,7 @@ class StatusRepository {
   final StatusService statusService;
   StatusRepository({required this.statusService});
 
-  Future<Data> getStatus() async {
+  Future<Data?> getStatus() async {
     Response response = await statusService.retrieveStatus();
     Data data = Data.fromJson(response.data);
     return data;
