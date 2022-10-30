@@ -7,8 +7,13 @@ class StatusStateNotifier extends StateNotifier<Data?> {
   StatusStateNotifier(super.state);
 
   void retrieveStatus(StatusRepository repository) async {
-    try{
-      final response  = await repository.getStatus(data)
+    try {
+      final response = await repository.getStatus();
+      if (response != null) {
+        state = response;
+      }
+    } catch (e) {
+      state = null;
     }
   }
 }
