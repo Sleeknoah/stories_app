@@ -11,56 +11,53 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: ListView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 24.0,
-                ),
-                child: profileRow(context),
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 24.0,
               ),
+              child: profileRow(context),
+            ),
 
-              ///Sized Box
-              const SizedBox(
-                height: 30,
-              ),
+            ///Sized Box
+            const SizedBox(
+              height: 30,
+            ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 8.0,
-                ),
-                child: Text(
-                  'Status',
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontFamily: 'UberMoveText',
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 8.0,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: Text(
-                  'View status of all your friends here.',
-                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                        fontFamily: 'UberMove',
-                        color: Colors.grey,
-                      ),
-                ),
+              child: Text(
+                'Status',
+                style: Theme.of(context).textTheme.headline5?.copyWith(
+                      fontFamily: 'UberMoveText',
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+              ),
+              child: Text(
+                'View status of all your friends here.',
+                style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontFamily: 'UberMove',
+                      color: Colors.grey,
+                    ),
+              ),
+            ),
 
-              ///Sized Box
-              const SizedBox(
-                height: 30,
-              ),
-            ],
-          ),
+            ///Sized Box
+            const SizedBox(
+              height: 30,
+            ),
+          ],
         ),
       ),
     );
