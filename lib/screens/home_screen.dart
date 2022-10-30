@@ -33,10 +33,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final loadingState = ref.watch(loadingProvider);
     final statusState = ref.watch(statusProvider);
+    final data = statusState?.profile.friends;
     ref.listen<Data?>(statusProvider, (previous, next) {
       ///if there is data set loading to false state
-      if(next != null){
-        ref.read() = false;
+      if (next != null) {
+        ref.read(loadingProvider.notifier).state = false;
       }
     });
 
@@ -45,12 +46,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
+            ///Profile picture and theme toggle
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 24.0,
                 vertical: 24.0,
               ),
-              child: profileRow(context),
+              child: profileRow(
+                context,
+                statusState,
+              ),
             ),
 
             ///Sized Box
@@ -114,12 +119,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         primary: false,
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 16,
-                        itemCount: 10,
+                        itemCount: data?.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return const FriendStatus(
-                            imgUrl:
-                                "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg",
-                            avatarUrl: "avatarUrl",
+                          return FriendStatus(
+                            imgUrl: data[index]
+                                .status[data[index].status.length - 1]
+                                .image,
+                            avatarUrl: data[index].picture,
+                            numStatus: data[index].status.length,
                           );
                         },
                       ),
@@ -134,13 +141,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget profileRow(BuildContext context) {
+  Widget profileRow(BuildContext context, Data? statusState) {
     return Row(
       children: [
         const Spacer(),
-        const CircleAvatar(
+        CircleAvatar(
           radius: 25,
           backgroundColor: Colors.grey,
+          backgroundImage: NetworkImage(statusState?.profile.picture ?? ''),
         ),
         Padding(
           padding: const EdgeInsets.only(
