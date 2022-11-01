@@ -6,14 +6,12 @@ import 'circle_row.dart';
 
 class FriendStatus extends StatelessWidget {
   final String? imgUrl;
-  final String? avatarUrl;
   final numStatus;
   final Status status;
   final Friends friends;
   const FriendStatus({
     Key? key,
     required this.imgUrl,
-    required this.avatarUrl,
     this.numStatus,
     required this.status,
     required this.friends,
