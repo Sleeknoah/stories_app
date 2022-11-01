@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'circle_row.dart';
 
 class FriendStatus extends StatelessWidget {
-  final String? imgUrl;
-  final String? avatarUrl;
+  final String imgUrl;
+  final String avatarUrl;
   final numStatus;
   const FriendStatus(
       {Key? key, required this.imgUrl, required this.avatarUrl, this.numStatus})
@@ -18,14 +18,16 @@ class FriendStatus extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
+              color: Colors.grey,
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 image: NetworkImage(
-                  imgUrl ?? '',
+                  imgUrl,
                 ),
                 fit: BoxFit.cover,
               ),
             ),
+            child: imgUrl == '' ? textContainer() : null,
           ),
           Positioned(
             left: 10.0,
@@ -35,12 +37,24 @@ class FriendStatus extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Colors.grey,
                 backgroundImage: NetworkImage(
-                  avatarUrl ?? '',
+                  avatarUrl,
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget textContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: const Center(
+        child: Text('Text'),
       ),
     );
   }

@@ -37,7 +37,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.listen<Data?>(statusProvider, (previous, next) {
       ///if there is data set loading to false state
       if (next != null) {
-        ref.read(loadingProvider.notifier).state = false;
+        ref.watch(loadingProvider.notifier).state = false;
+        print("hello");
       }
     });
 
@@ -110,26 +111,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   visible: !loadingState,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Expanded(
-                      child: MasonryGridView.builder(
-                        gridDelegate:
-                            const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
-                        shrinkWrap: true,
-                        primary: false,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        itemCount: data?.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return FriendStatus(
-                            imgUrl: data[index]
-                                .status[data[index].status.length - 1]
-                                .image,
-                            avatarUrl: data[index].picture,
-                            numStatus: data[index].status.length,
-                          );
-                        },
-                      ),
+                    child: MasonryGridView.builder(
+                      gridDelegate:
+                          const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2),
+                      shrinkWrap: true,
+                      primary: false,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      itemCount: data?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return FriendStatus(
+                          imgUrl: data![index]
+                              .status[data[index].status.length - 1]
+                              .image,
+                          avatarUrl: data[index].picture,
+                          numStatus: data[index].status.length,
+                        );
+                      },
                     ),
                   ),
                 ),
