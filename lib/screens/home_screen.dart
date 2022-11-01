@@ -125,8 +125,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           imgUrl: data![index]
                               .status[data[index].status.length - 1]
                               .image,
-                          avatarUrl: data[index].picture,
                           numStatus: data[index].status.length,
+                          friends: data[index],
                           status:
                               data[index].status[data[index].status.length - 1],
                         );
