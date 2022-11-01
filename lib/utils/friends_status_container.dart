@@ -23,29 +23,37 @@ class FriendStatus extends StatelessWidget {
       height: 250,
       child: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: NetworkImage(
-                  imgUrl!,
+          Hero(
+            tag: 'tag',
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    imgUrl!,
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
+              child: imgUrl == ''
+                  ? textContainer(
+                      status.text,
+                      context,
+                      status.bgColor,
+                    )
+                  : null,
             ),
-            child: imgUrl == ''
-                ? textContainer(
-                    status.text,
-                    context,
-                    status.bgColor,
-                  )
-                : null,
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.circular(10),
+          InkWell(
+            onTap: () {
+              print('Hello');
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
           Positioned(
