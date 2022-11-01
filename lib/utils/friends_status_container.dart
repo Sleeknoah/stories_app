@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../model/response/status.dart';
 import 'circle_row.dart';
 
 class FriendStatus extends StatelessWidget {
   final String? imgUrl;
   final String? avatarUrl;
   final numStatus;
-  const FriendStatus(
-      {Key? key, required this.imgUrl, required this.avatarUrl, this.numStatus})
-      : super(key: key);
+  final Status status;
+  const FriendStatus({
+    Key? key,
+    required this.imgUrl,
+    required this.avatarUrl,
+    this.numStatus,
+    required this.status,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,13 @@ class FriendStatus extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            child: imgUrl == '' ? textContainer() : null,
+            child: imgUrl == ''
+                ? textContainer(
+                    status.text,
+                    context,
+                    status.bgColor,
+                  )
+                : null,
           ),
           Positioned(
             left: 10.0,
@@ -47,15 +59,41 @@ class FriendStatus extends StatelessWidget {
     );
   }
 
-  Widget textContainer() {
+  Widget textContainer(String text, BuildContext context, String color) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.amber,
+        color: backgroundColorSelector(color),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: const Center(
-        child: Text('Text'),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                  fontFamily: 'UberMoveText',
+                  color: Colors.white,
+                ),
+          ),
+        ),
       ),
     );
+  }
+
+  ///Set background color selector
+  MaterialColor backgroundColorSelector(String color) {
+    switch (color) {
+      case 'amber':
+        return Colors.amber;
+      case 'blue':
+        return Colors.blue;
+      case 'green':
+        return Colors.green;
+      case 'purple':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
   }
 }
