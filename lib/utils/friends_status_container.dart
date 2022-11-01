@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stories_app/screens/status_screen.dart';
 
 import '../model/response/friends.dart';
 import '../model/response/status.dart';
@@ -47,7 +48,11 @@ class FriendStatus extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              print('Hello');
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return const StatusScreen();
+                }),
+              );
             },
             child: Container(
               decoration: BoxDecoration(
