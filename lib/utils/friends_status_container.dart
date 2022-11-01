@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../model/response/friends.dart';
 import '../model/response/status.dart';
 import 'circle_row.dart';
 
@@ -8,12 +9,14 @@ class FriendStatus extends StatelessWidget {
   final String? avatarUrl;
   final numStatus;
   final Status status;
+  final Friends friends;
   const FriendStatus({
     Key? key,
     required this.imgUrl,
     required this.avatarUrl,
     this.numStatus,
     required this.status,
+    required this.friends,
   }) : super(key: key);
 
   @override
@@ -28,7 +31,7 @@ class FriendStatus extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 image: NetworkImage(
-                  imgUrl ?? '',
+                  imgUrl!,
                 ),
                 fit: BoxFit.cover,
               ),
@@ -41,17 +44,52 @@ class FriendStatus extends StatelessWidget {
                   )
                 : null,
           ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
           Positioned(
             left: 10.0,
             top: 10.0,
-            child: CurvedRow(
-              numStatus: numStatus ?? 1,
-              child: CircleAvatar(
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(
-                  avatarUrl ?? '',
+            child: Row(
+              children: [
+                CurvedRow(
+                  numStatus: numStatus ?? 1,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(
+                      friends.picture,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      friends.name.split(' ')[0],
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.caption?.copyWith(
+                          fontFamily: 'UberMoveText',
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      status.timeStamp,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.caption?.copyWith(
+                            fontFamily: 'UberMoveText',
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
         ],
