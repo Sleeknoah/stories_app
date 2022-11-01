@@ -18,6 +18,7 @@ class FriendStatus extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
+              color: Colors.grey,
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 image: NetworkImage(
@@ -26,6 +27,7 @@ class FriendStatus extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+            child: imgUrl == '' ? textContainer() : null,
           ),
           Positioned(
             left: 10.0,
@@ -41,6 +43,18 @@ class FriendStatus extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget textContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: const Center(
+        child: Text('Text'),
       ),
     );
   }

@@ -19,7 +19,7 @@ class StatusService {
       Response response = await dio.get(
         ApiConstants.statusUrl,
       );
-      print(response.data);
+      print(response.data['profile']['picture']);
       return response;
     } on DioError catch (e) {
       throw 'error';

@@ -23,3 +23,8 @@ final statusRepositoryProvider = Provider.autoDispose<StatusRepository>((ref) {
 final statusProvider = StateNotifierProvider<StatusStateNotifier, Data?>(
   (ref) => StatusStateNotifier(null),
 );
+
+final futureProvider = FutureProvider.autoDispose((ref) {
+  final repo = ref.watch(statusRepositoryProvider);
+  return repo.getStatus();
+});
