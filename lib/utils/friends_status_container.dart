@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stories_app/screens/status_screen.dart';
 
 import '../model/response/friends.dart';
 import '../model/response/status.dart';
@@ -24,41 +23,29 @@ class FriendStatus extends StatelessWidget {
       height: 250,
       child: Stack(
         children: [
-          Hero(
-            tag: 'tag',
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    imgUrl!,
-                  ),
-                  fit: BoxFit.cover,
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: NetworkImage(
+                  imgUrl!,
                 ),
+                fit: BoxFit.cover,
               ),
-              child: imgUrl == ''
-                  ? textContainer(
-                      status.text,
-                      context,
-                      status.bgColor,
-                    )
-                  : null,
             ),
+            child: imgUrl == ''
+                ? textContainer(
+                    status.text,
+                    context,
+                    status.bgColor,
+                  )
+                : null,
           ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return const StatusScreen();
-                }),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(10),
-              ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           Positioned(

@@ -28,3 +28,10 @@ final futureProvider = FutureProvider.autoDispose((ref) {
   final repo = ref.watch(statusRepositoryProvider);
   return repo.getStatus();
 });
+
+final statusIndexProvider = StateProvider.autoDispose<int>((ref) {
+  return 0;
+});
+final statusLengthProvider = StateProvider.autoDispose<int>((ref) {
+  return 0;
+});

@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stories_app/model/repository/status_repository.dart';
 import 'package:stories_app/model/service/status_service.dart';
+import 'package:stories_app/screens/status_screen.dart';
 import 'package:stories_app/viewmodel/providers/providers.dart';
 
 import '../model/response/data.dart';
@@ -121,14 +122,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       mainAxisSpacing: 16,
                       itemCount: data?.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return FriendStatus(
-                          imgUrl: data![index]
-                              .status[data[index].status.length - 1]
-                              .image,
-                          numStatus: data[index].status.length,
-                          friends: data[index],
-                          status:
-                              data[index].status[data[index].status.length - 1],
+                        return GestureDetector(
+                          onTap: () {
+                            int length = data[index].status.length - 1;
+                            ref.watch(statusLengthProvider.notifier).state =
+                                length;
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                return StatusScreen(
+                                  pageIndex: index,
+                                  listItem: data,
+                                );
+                              }),
+                            );
+                          },
+                          child: FriendStatus(
+                            imgUrl: data![index]
+                                .status[data[index].status.length - 1]
+                                .image,
+                            numStatus: data[index].status.length,
+                            friends: data[index],
+                            status: data[index]
+                                .status[data[index].status.length - 1],
+                          ),
                         );
                       },
                     ),
