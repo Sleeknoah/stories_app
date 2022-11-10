@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stories_app/model/repository/status_repository.dart';
 import 'package:stories_app/model/service/status_service.dart';
 import 'package:stories_app/screens/status_pageview.dart';
@@ -34,12 +33,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final loadingState = ref.watch(loadingProvider);
     final statusState = ref.watch(statusProvider);
+    final isDark = ref.watch(isDarkThemeProvider);
     final data = statusState?.profile.friends;
     ref.listen<Data?>(statusProvider, (previous, next) {
       ///if there is data set loading to false state
       if (next != null) {
         ref.watch(loadingProvider.notifier).state = false;
-        print("hello");
       }
     });
 
@@ -57,6 +56,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: profileRow(
                 context,
                 statusState,
+                isDark,
               ),
             ),
 
@@ -86,7 +86,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 'View status of all your friends here.',
                 style: Theme.of(context).textTheme.subtitle1?.copyWith(
                       fontFamily: 'UberMove',
-                      color: Colors.grey,
+                      color: isDark ? Colors.white : Colors.grey,
                     ),
               ),
             ),
@@ -162,7 +162,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget profileRow(BuildContext context, Data? statusState) {
+  Widget profileRow(BuildContext context, Data? statusState, bool isDark) {
     return Row(
       children: [
         const Spacer(),
@@ -176,10 +176,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             left: 32.0,
           ),
           child: InkResponse(
-            onTap: () {},
-            child: const FaIcon(
-              FontAwesomeIcons.moon,
-            ),
+            onTap: () {
+              ref.read(isDarkThemeProvider.notifier).changeDarkTheme(!isDark);
+            },
+            child: !isDark
+                ? const Icon(
+                    Icons.dark_mode_outlined,
+                    size: 30,
+                  )
+                : const Icon(
+                    Icons.light_mode_outlined,
+                    size: 30,
+                  ),
           ),
         ),
       ],
