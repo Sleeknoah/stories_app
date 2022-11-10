@@ -5,10 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:stories_app/viewmodel/providers/providers.dart';
 
+import '../model/response/friends.dart';
+
 class ActiveStatus extends ConsumerStatefulWidget {
   final bool isGrey;
+  final List<Friends> list;
   const ActiveStatus({
     required this.isGrey,
+    required this.list,
     Key? key,
   }) : super(key: key);
 
@@ -20,24 +24,32 @@ class _ActiveStatusState extends ConsumerState<ActiveStatus> {
   late Timer _timer;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print(ref.read(statusIndexProvider));
+    print(ref.read(statusLengthProvider));
     _timer = Timer(
         const Duration(
-          milliseconds: 10000,
+          milliseconds: 5000,
         ), () {
-      if (ref.read(statusIndexProvider) < ref.read(statusLengthProvider)) {
+      if (ref.read(statusIndexProvider) < ref.read(statusLengthProvider) - 1) {
         ref.read(statusIndexProvider.notifier).state += 1;
       } else {
-        print('Finished');
+        if (ref.read(statusPageProvider) <
+            ref.read(statusPageLengthProvider) - 1) {
+          ref.read(statusIndexProvider.notifier).state = 0;
+          final nextPage = ref
+              .read(statusPageProvider.notifier)
+              .update((state) => state + 1);
+
+          ///Set new status length
+          ref.read(statusLengthProvider.notifier).state =
+              widget.list[nextPage].status.length;
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _timer.cancel();
   }
@@ -47,7 +59,7 @@ class _ActiveStatusState extends ConsumerState<ActiveStatus> {
     return LinearPercentIndicator(
       lineHeight: 2,
       animation: true,
-      animationDuration: 10000,
+      animationDuration: 5000,
       percent: 1,
       progressColor: Colors.white,
       backgroundColor: widget.isGrey == true ? Colors.grey : Colors.black26,

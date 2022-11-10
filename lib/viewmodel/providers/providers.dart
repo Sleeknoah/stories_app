@@ -35,3 +35,10 @@ final statusIndexProvider = StateProvider.autoDispose<int>((ref) {
 final statusLengthProvider = StateProvider.autoDispose<int>((ref) {
   return 0;
 });
+
+final statusPageProvider = StateProvider.autoDispose<int>((ref) {
+  return 0;
+});
+final statusPageLengthProvider = StateProvider.autoDispose<int>((ref) {
+  return 0;
+});

@@ -18,15 +18,17 @@ class StatusScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final statusIndex = ref.watch(statusIndexProvider);
+    final statusPage = ref.watch(statusPageProvider);
+    print('pageIndex $pageIndex');
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
           Container(
-            color: listItem[pageIndex].status[statusIndex].image.isNotEmpty
+            color: listItem[statusPage].status[statusIndex].image.isNotEmpty
                 ? Colors.black
                 : BackgroundColorSelector.selector(
-                    listItem[pageIndex].status[statusIndex].bgColor),
+                    listItem[statusPage].status[statusIndex].bgColor),
           ),
           Container(
             child: Row(
@@ -34,11 +36,18 @@ class StatusScreen extends ConsumerWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      print("left");
                       if (ref.read(statusIndexProvider) != 0) {
                         ref.read(statusIndexProvider.notifier).state -= 1;
                       } else {
-                        print('Finished');
+                        if (ref.read(statusPageProvider) != 0) {
+                          ref.read(statusIndexProvider.notifier).state = 0;
+                          final nextPage =
+                              ref.read(statusPageProvider.notifier).state -= 1;
+
+                          ///Set new status length
+                          ref.read(statusLengthProvider.notifier).state =
+                              listItem[nextPage].status.length;
+                        }
                       }
                     },
                     child: Container(
@@ -49,12 +58,20 @@ class StatusScreen extends ConsumerWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      print("right");
                       if (ref.read(statusIndexProvider) <
-                          ref.read(statusLengthProvider)) {
+                          ref.read(statusLengthProvider) - 1) {
                         ref.read(statusIndexProvider.notifier).state += 1;
                       } else {
-                        print('Finished');
+                        if (ref.read(statusPageProvider) <
+                            ref.read(statusPageLengthProvider) - 1) {
+                          ref.read(statusIndexProvider.notifier).state = 0;
+                          final nextPage =
+                              ref.read(statusPageProvider.notifier).state += 1;
+
+                          ///Set new status length
+                          ref.read(statusLengthProvider.notifier).state =
+                              listItem[nextPage].status.length;
+                        }
                       }
                     },
                     child: Container(
@@ -78,25 +95,26 @@ class StatusScreen extends ConsumerWidget {
                       ),
                       child: Row(
                         children: List.generate(
-                          listItem[pageIndex].status.length,
+                          listItem[statusPage].status.length,
                           (index) => Expanded(
                             child: Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: index == statusIndex
                                   ? ActiveStatus(
-                                      isGrey: listItem[pageIndex]
+                                      isGrey: listItem[statusPage]
                                               .status[statusIndex]
                                               .image
                                               .isNotEmpty
                                           ? true
                                           : false,
+                                      list: listItem,
                                     )
                                   : Container(
                                       height: 2,
                                       decoration: BoxDecoration(
                                           color: index < statusIndex
                                               ? Colors.white
-                                              : listItem[pageIndex]
+                                              : listItem[statusPage]
                                                       .status[statusIndex]
                                                       .image
                                                       .isNotEmpty
@@ -119,7 +137,7 @@ class StatusScreen extends ConsumerWidget {
                             radius: 20,
                             backgroundColor: Colors.grey,
                             backgroundImage:
-                                NetworkImage(listItem[pageIndex].picture),
+                                NetworkImage(listItem[statusPage].picture),
                           ),
                           const SizedBox(
                             width: 10,
@@ -131,7 +149,7 @@ class StatusScreen extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  listItem[pageIndex].name,
+                                  listItem[statusPage].name,
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context)
                                       .textTheme
@@ -143,7 +161,7 @@ class StatusScreen extends ConsumerWidget {
                                       ),
                                 ),
                                 Text(
-                                  listItem[pageIndex]
+                                  listItem[statusPage]
                                       .status[statusIndex]
                                       .timeStamp,
                                   textAlign: TextAlign.center,

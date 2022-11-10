@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stories_app/model/repository/status_repository.dart';
 import 'package:stories_app/model/service/status_service.dart';
-import 'package:stories_app/screens/status_screen.dart';
+import 'package:stories_app/screens/status_pageview.dart';
 import 'package:stories_app/viewmodel/providers/providers.dart';
 
 import '../model/response/data.dart';
@@ -124,14 +124,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            int length = data[index].status.length - 1;
+                            int length = data[index].status.length;
                             ref.watch(statusLengthProvider.notifier).state =
                                 length;
+                            ref.watch(statusPageLengthProvider.notifier).state =
+                                data.length;
+                            ref.watch(statusPageProvider.notifier).state =
+                                index;
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return StatusScreen(
+                                return StatusPageView(
                                   pageIndex: index,
-                                  listItem: data,
+                                  listItem: statusState!,
                                 );
                               }),
                             );
