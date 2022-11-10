@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stories_app/model/response/friends.dart';
@@ -29,6 +30,14 @@ class StatusScreen extends ConsumerWidget {
                 ? Colors.black
                 : BackgroundColorSelector.selector(
                     listItem[statusPage].status[statusIndex].bgColor),
+            child: listItem[statusPage].status[statusIndex].image.isNotEmpty
+                ? createImage(
+                    context,
+                    listItem[statusPage].status[statusIndex].image,
+                    ref,
+                    listItem[statusPage].status[statusIndex].text)
+                : createText(
+                    context, listItem[statusPage].status[statusIndex].text),
           ),
           Container(
             child: Row(
@@ -176,7 +185,7 @@ class StatusScreen extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -187,6 +196,72 @@ class StatusScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget createText(BuildContext context, String text) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 36.0,
+        ),
+        child: AutoSizeText(
+          text,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headline5?.copyWith(
+                fontFamily: 'UberMoveText',
+                color: Colors.white,
+              ),
+        ),
+      ),
+    );
+  }
+
+  createImage(
+      BuildContext context, String imageUrl, WidgetRef ref, String text) {
+    return Stack(
+      children: [
+        Center(
+          child: Image.network(
+            imageUrl,
+            loadingBuilder: (context, child, loading) {
+              if (loading == null) {
+                return child;
+              } else {
+                return const CircularProgressIndicator(
+                  color: Colors.white,
+                );
+              }
+            },
+            errorBuilder: (context, child, loading) {
+              return const CircularProgressIndicator(
+                color: Colors.white,
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 72.0,
+            horizontal: 36.0,
+          ),
+          child: Column(
+            children: [
+              const Spacer(),
+              Center(
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontFamily: 'UberMoveText',
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
